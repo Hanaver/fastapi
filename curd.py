@@ -10,7 +10,7 @@ def get_city_by_name(db: Session, name: str):
 def get_cities(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.City).offset(skip).limit(limit).all()
 
-def create_city(db: Session, city: schemas.CityCreate):
+def create_city(db: Session, city: schemas.CreateCity):
     db_city = models.City(**city.dict())
     db.add(db_city)
     db.commit()
@@ -23,7 +23,7 @@ def get_datas(db: Session, city: str = None, skip: int = 0, limit: int = 100):
         return db.query(models.Data).filter(models.Data.city.has(province=city))
     return db.query(models.Data).offset(skip).limit(limit).all()
 
-def create_city_data(db: Session, data: schemas.DataCreate, city_id: int):
+def create_city_data(db: Session, data: schemas.CreateData, city_id: int):
     db_data = models.Data(**data.dict(), city_id=city_id)
     db.add(db_data)
     db.commit()
