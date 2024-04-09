@@ -28,8 +28,10 @@ def create_city(city: schemas.CreateCity, db: Session = Depends(get_db)):
 
 
 @application.get('/' , response_class=HTMLResponse)
-def home(request: Request, city: str = None):
+async def home(request: Request, city: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db())):
+    data = curd.get_datas(db=db, city=city, skip= skip, limit= limit)
     return templates.TemplateResponse(
-        request=request,
-        name= 'home.html'
+        name= 'home.html',
+        request = request,
+        context = {data: data}
     )
