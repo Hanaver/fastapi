@@ -8,7 +8,7 @@ from models import City, Data
 
 application = APIRouter()
 
-templates = Jinja2Templates(directory = './templates')
+templates = Jinja2Templates(directory = 'templates')
 
 Base.metadata.create_all(bind=engine)
 
@@ -28,10 +28,10 @@ def create_city(city: schemas.CreateCity, db: Session = Depends(get_db)):
 
 
 @application.get('/' , response_class=HTMLResponse)
-async def home(request: Request, city: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db())):
+async def home(request: Request, city: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     data = curd.get_datas(db=db, city=city, skip= skip, limit= limit)
     return templates.TemplateResponse(
-        name= 'home.html',
         request = request,
-        context = {data: data}
+        name= 'home.html',
+        # context = {data: data.d}
     )
